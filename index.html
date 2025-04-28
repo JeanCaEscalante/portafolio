@@ -3,169 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jean Carlos Escalante - Desarrollador PHP/Laravel</title>
+    <title>Jean Carlos Escalante - Desarrollador Web</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // Habilitar estrategia de clase para modo oscuro
+        theme: {
+          extend: {
+            colors: {
+              // Colores base (Modo Claro)
+              'light-bg': '#f3f4f6', // gray-100
+              'light-secondary-bg': '#ffffff', // white
+              'light-text': '#1f2937', // gray-800
+              'light-secondary-text': '#4b5563', // gray-600
+              'accent': '#0d9488', // teal-600 (Un poco más oscuro para contraste en claro)
+              'accent-hover': '#0f766e', // teal-700
+
+              // Colores Modo Oscuro (prefijo dark:)
+              'dark-bg': '#111827', // gray-900
+              'dark-secondary-bg': '#1f2937', // gray-800
+              'dark-text': '#f3f4f6', // gray-100
+              'dark-secondary-text': '#9ca3af', // gray-400
+              'dark-accent': '#2dd4bf', // teal-400 (Más brillante para oscuro)
+              'dark-accent-hover': '#5eead4', // teal-300
+            },
+             animation: {
+                fadeIn: 'fadeIn 1s ease-out forwards',
+             },
+             keyframes: {
+                fadeIn: {
+                    '0%': { opacity: 0, transform: 'translateY(20px)' },
+                    '100%': { opacity: 1, transform: 'translateY(0)' },
+                }
+             }
+          }
+        }
+      }
+    </script>
     <style>
+        /* Estilos base para modo claro */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: theme('colors.light-bg');
+            color: theme('colors.light-text');
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        /* Animación sutil de fade-in */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Estilos para modo oscuro aplicados cuando html tiene la clase 'dark' */
+        .dark body {
+            background-color: theme('colors.dark-bg');
+            color: theme('colors.dark-text');
         }
-        .fade-in-section {
-            opacity: 0; /* Inicialmente invisible */
-            animation: fadeIn 0.8s ease-out forwards; /* Aplica animación */
-        }
-        /* Estilo para la navegación activa (opcional) */
+
+        /* Estilo navegación activa (adaptable a tema) */
         .nav-active {
             font-weight: 600;
-            color: #3b82f6; /* Azul de Tailwind */
+            /* El color se aplica dinámicamente con JS */
         }
+        /* Aplicar color inicial basado en tema (si no hay JS o antes de que JS se ejecute) */
+        a:not(.dark .nav-active) { color: theme('colors.accent'); }
+        .dark a.nav-active { color: theme('colors.dark-accent'); }
+
+
+        .icon {
+             width: 1.5rem;
+             height: 1.5rem;
+             display: inline-block;
+             vertical-align: middle;
+        }
+        .icon-sm {
+             width: 1.25rem; /* 20px */
+             height: 1.25rem;
+             display: inline-block;
+             vertical-align: middle;
+        }
+         .icon-lg {
+             width: 2.5rem; /* 40px */
+             height: 2.5rem;
+             display: inline-block;
+             vertical-align: middle;
+         }
+
+        /* Animación secciones */
+        .fade-in-section-js {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(20px);
+        }
+        .fade-in-section-js.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Clases utilitarias para mostrar/ocultar iconos de tema */
+        .dark .dark-icon { display: inline-block; }
+        .dark .light-icon { display: none; }
+        /* Default state (light mode or no JS) */
+        html:not(.dark) .light-icon { display: inline-block; }
+        html:not(.dark) .dark-icon { display: none; }
+
+
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="antialiased">
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-light-secondary-bg dark:bg-dark-secondary-bg shadow-md sticky top-0 z-50 transition-colors duration-300">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-blue-600 hover:text-blue-700">Jean C. Escalante</a>
-            <div class="hidden md:flex space-x-6">
-                <a href="#inicio" class="text-gray-600 hover:text-blue-600 transition duration-300">Inicio</a>
-                <a href="#acerca" class="text-gray-600 hover:text-blue-600 transition duration-300">Acerca de Mí</a>
-                <a href="#servicios" class="text-gray-600 hover:text-blue-600 transition duration-300">Servicios</a>
-                <a href="#habilidades" class="text-gray-600 hover:text-blue-600 transition duration-300">Habilidades</a>
-                <a href="#proyectos" class="text-gray-600 hover:text-blue-600 transition duration-300">Proyectos</a>
-                <a href="#contacto" class="text-gray-600 hover:text-blue-600 transition duration-300">Contacto</a>
-            </div>
-            <div class="md:hidden">
-                <button id="menu-btn" class="text-gray-600 hover:text-blue-600 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            <a href="#" class="text-xl font-bold text-accent dark:text-dark-accent hover:text-accent-hover dark:hover:text-dark-accent-hover flex items-center transition-colors duration-300">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+                 </svg>
+                 Jean Escalante
+            </a>
+
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex space-x-6">
+                    <a href="#acerca" class="text-light-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition duration-300">Sobre mí</a>
+                    <a href="#habilidades" class="text-light-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition duration-300">Tecnologías</a>
+                    <a href="#proyectos" class="text-light-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition duration-300">Proyectos</a>
+                    <a href="#contacto" class="text-light-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition duration-300">Contacto</a>
+                </div>
+
+                <button id="theme-toggle" type="button" class="text-light-secondary-text dark:text-dark-secondary-text hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-lg text-sm p-2.5 transition-colors duration-300">
+                    <svg class="light-icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.707 10.607a1 1 0 011.414 0l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <svg class="dark-icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
                 </button>
+
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-light-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent focus:outline-none transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
             </div>
         </nav>
-        <div id="mobile-menu" class="md:hidden hidden bg-white py-2">
-            <a href="#inicio" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600">Inicio</a>
-            <a href="#acerca" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600">Acerca de Mí</a>
-            <a href="#servicios" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600">Servicios</a>
-            <a href="#habilidades" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600">Habilidades</a>
-            <a href="#proyectos" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600">Proyectos</a>
-            <a href="#contacto" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600">Contacto</a>
+        <div id="mobile-menu" class="md:hidden hidden bg-light-secondary-bg dark:bg-dark-secondary-bg py-2 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <a href="#acerca" class="block px-6 py-2 text-light-secondary-text dark:text-dark-secondary-text hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-accent dark:hover:text-dark-accent">Sobre mí</a>
+            <a href="#habilidades" class="block px-6 py-2 text-light-secondary-text dark:text-dark-secondary-text hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-accent dark:hover:text-dark-accent">Tecnologías</a>
+            <a href="#proyectos" class="block px-6 py-2 text-light-secondary-text dark:text-dark-secondary-text hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-accent dark:hover:text-dark-accent">Proyectos</a>
+            <a href="#contacto" class="block px-6 py-2 text-light-secondary-text dark:text-dark-secondary-text hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-accent dark:hover:text-dark-accent">Contacto</a>
         </div>
     </header>
 
     <main>
-        <section id="inicio" class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 md:py-32">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 animate-fadeIn">Jean Carlos Escalante</h1>
-                <p class="text-lg md:text-2xl mb-8 max-w-3xl mx-auto animate-fadeIn" style="animation-delay: 0.2s;">
-                    Desarrollador Full Stack especializado en PHP/Laravel. Transformo tus necesidades técnicas en soluciones web robustas, escalables y eficientes.
-                </p>
-                <a href="#proyectos" class="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-gray-100 transition duration-300 animate-fadeIn" style="animation-delay: 0.4s;">
-                    Ver Mis Proyectos
-                </a>
+        <section id="inicio" class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text py-20 md:py-32 transition-colors duration-300">
+            <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+                <div class="text-center md:text-left animate-fadeIn">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-4 text-light-text dark:text-dark-text">Jean Escalante</h1>
+                    <p class="text-2xl md:text-4xl mb-8 text-accent dark:text-dark-accent font-semibold">
+                        Developer
+                    </p>
+                    <p class="text-lg text-light-secondary-text dark:text-dark-secondary-text mb-8 max-w-lg mx-auto md:mx-0">
+                        Desarrollador Full Stack especializado en PHP/Laravel. Transformo tus necesidades técnicas en soluciones web robustas, escalables y eficientes.
+                    </p>
+                    <a href="#proyectos" class="bg-accent dark:bg-dark-accent text-white dark:text-dark-bg font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-accent-hover dark:hover:bg-dark-accent-hover transition-colors duration-300 inline-block">
+                        Ver Mis Proyectos
+                    </a>
+                </div>
+                <div class="animate-fadeIn" style="animation-delay: 0.2s;">
+                    <img class="w-full max-w-md mx-auto h-auto text-accent dark:text-dark-accent transition-colors duration-300" src="./assets/images/Developer activity-amico.svg" alt="illustrat_storyset">
+                </div>
             </div>
         </section>
 
-        <section id="acerca" class="py-16 md:py-24 bg-white">
+        <section id="acerca" class="py-16 md:py-24 bg-light-secondary-bg dark:bg-dark-secondary-bg fade-in-section-js transition-colors duration-300">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Acerca de Mí</h2>
-                <div class="max-w-4xl mx-auto text-lg text-gray-700 space-y-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-light-text dark:text-dark-text">Sobre mí</h2>
+                <div class="max-w-4xl mx-auto text-lg text-light-secondary-text dark:text-dark-secondary-text space-y-6">
                     <p>
-                        Desde mis inicios como TSU en Informática, me sentí atraído por la capacidad de la tecnología para resolver problemas reales. Encontré en PHP y especialmente en el ecosistema Laravel las herramientas perfectas para construir aplicaciones web robustas y elegantes, enfocándome siempre en la calidad y la eficiencia.
+                        Desde mis inicios como TSU en Informática, me sentí atraído por la capacidad de la tecnología para resolver problemas reales. Encontré en PHP y especialmente en el ecosistema Laravel las herramientas perfectas para construir aplicaciones web robustas, enfocándome siempre en la calidad y la eficiencia.
                     </p>
-                    <p>
+                     <p>
                         Durante mis 4 años de experiencia, he colaborado con empresas como Kickof Development CA y ArtComp FP, enfrentando desafíos desde el mantenimiento de sistemas complejos hasta la creación de soluciones desde cero. Mi enfoque se basa en la comunicación constante con el cliente y la entrega de código limpio, probado y escalable, asegurando que el resultado final no solo funcione, sino que también sea fácil de mantener y evolucionar.
                     </p>
                     <p>
                         Me especializo en la modernización de sistemas legacy, guiando a las empresas en su transición hacia arquitecturas Laravel modernas y seguras. Además, mi experiencia full-stack (incluyendo React.js para el frontend) me permite tener una visión integral del proyecto y aportar valor en todas las capas de la aplicación.
                     </p>
-                    <div class="flex justify-center space-x-4 mt-8">
-                        <a href="[TU_ENLACE_LINKEDIN]" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 transition duration-300">[Icono LinkedIn] LinkedIn</a>
-                        <a href="https://github.com/jeancaescalante" target="_blank" rel="noopener noreferrer" class="text-gray-800 hover:text-black transition duration-300">[Icono GitHub] GitHub</a>
-                        </div>
+                    <div class="flex justify-center space-x-6 mt-8">
+                        <a href="https://github.com/jeancaescalante" target="_blank" rel="noopener noreferrer" class="text-light-text dark:text-dark-text hover:text-accent dark:hover:text-dark-accent transition duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" fill="currentColor" viewBox="0 0 16 16"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/> </svg>
+                            GitHub
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="servicios" class="py-16 md:py-24 bg-gray-100">
+        <section id="servicios" class="py-16 md:py-24 bg-light-bg dark:bg-dark-bg fade-in-section-js transition-colors duration-300">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Mis Servicios</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-light-text dark:text-dark-text">Mis Servicios</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                        <div class="text-blue-600 mb-4">[Icono Migración]</div>
-                        <h3 class="text-xl font-semibold mb-3">Migraciones Seguras</h3>
-                        <p class="text-gray-600">Modernizo tus sistemas heredados hacia arquitecturas PHP/Laravel estables, seguras y fáciles de mantener.</p>
+                    <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg p-8 rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-accent dark:text-dark-accent mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-lg">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Migraciones Seguras</h3>
+                        <p class="text-light-secondary-text dark:text-dark-secondary-text">Modernizo tus sistemas heredados hacia arquitecturas PHP/Laravel estables, seguras y fáciles de mantener.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                        <div class="text-blue-600 mb-4">[Icono Desarrollo]</div>
-                        <h3 class="text-xl font-semibold mb-3">Desarrollo a Medida con Laravel</h3>
-                        <p class="text-gray-600">Creo aplicaciones web personalizadas (CRMs, ERPs, etc.) utilizando las mejores prácticas de Laravel.</p>
+                     <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg p-8 rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                         <div class="text-accent dark:text-dark-accent mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-lg">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Desarrollo a Medida con Laravel</h3>
+                        <p class="text-light-secondary-text dark:text-dark-secondary-text">Creo aplicaciones web personalizadas (CRMs, ERPs, etc.) utilizando las mejores prácticas de Laravel.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                        <div class="text-blue-600 mb-4">[Icono Mantenimiento]</div>
-                        <h3 class="text-xl font-semibold mb-3">Mantenimiento y Optimización</h3>
-                        <p class="text-gray-600">Ofrezco soporte continuo, optimización de rendimiento y nuevas funcionalidades para tus proyectos Laravel.</p>
+                     <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg p-8 rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-accent dark:text-dark-accent mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-lg">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.004.827c-.292.24-.437.613-.43.992a6.76 6.76 0 0 1 0 1.918c.007.379.137.753.43.992l1.005.827a1.125 1.125 0 0 1 .26 1.431l-1.296 2.247a1.125 1.125 0 0 1-1.37.49l-1.217-.456c-.355-.133-.75-.072-1.075.124a6.57 6.57 0 0 1-.22.127c-.332.183-.582.495-.645.87l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.37-.49l-1.296-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.438-.613.43-.992a6.76 6.76 0 0 1 0-1.918c-.007-.379-.137-.753-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.431l1.296-2.247a1.125 1.125 0 0 1 1.37-.49l1.217.456c.355.133.75.072 1.076-.124.072-.044.146-.087.22-.127.332-.183.582-.495.644-.87l.213-1.281Z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Mantenimiento y Optimización</h3>
+                        <p class="text-light-secondary-text dark:text-dark-secondary-text">Ofrezco soporte continuo, optimización de rendimiento y nuevas funcionalidades para tus proyectos Laravel.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                        <div class="text-blue-600 mb-4">[Icono Panel Admin]</div>
-                        <h3 class="text-xl font-semibold mb-3">Paneles Administrativos</h3>
-                        <p class="text-gray-600">Diseño y desarrollo interfaces de administración funcionales y fáciles de usar para gestionar tus datos.</p>
+                    <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg p-8 rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                         <div class="text-accent dark:text-dark-accent mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-lg">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Paneles Administrativos</h3>
+                        <p class="text-light-secondary-text dark:text-dark-secondary-text">Diseño y desarrollo interfaces de administración funcionales y fáciles de usar para gestionar tus datos.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                        <div class="text-blue-600 mb-4">[Icono API]</div>
-                        <h3 class="text-xl font-semibold mb-3">Desarrollo de APIs RESTful</h3>
-                        <p class="text-gray-600">Construyo APIs robustas y seguras con Laravel para conectar tus diversas aplicaciones y servicios.</p>
+                     <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg p-8 rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-accent dark:text-dark-accent mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-lg">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-4.243-4.243l3.275-3.275a4.5 4.5 0 0 0-6.336 4.486c.048.58.188 1.193.349 1.743m7.48 2.25h.008v.008h-.008v-.008Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Desarrollo de APIs RESTful</h3>
+                        <p class="text-light-secondary-text dark:text-dark-secondary-text">Construyo APIs robustas y seguras con Laravel para conectar tus diversas aplicaciones y servicios.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                        <div class="text-blue-600 mb-4">[Icono Integración]</div>
-                        <h3 class="text-xl font-semibold mb-3">Integración de Servicios</h3>
-                        <p class="text-gray-600">Integro tus aplicaciones con APIs de terceros (pagos, email, etc.) para ampliar su funcionalidad.</p>
+                     <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg p-8 rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-accent dark:text-dark-accent mb-4">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-lg">
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                             </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Integración de Servicios</h3>
+                        <p class="text-light-secondary-text dark:text-dark-secondary-text">Integro tus aplicaciones con APIs de terceros (pagos, email, etc.) para ampliar su funcionalidad.</p>
                     </div>
                 </div>
                 <div class="text-center mt-12">
-                     <a href="#contacto" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                     <a href="#contacto" class="bg-accent dark:bg-dark-accent text-white dark:text-dark-bg font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-accent-hover dark:hover:bg-dark-accent-hover transition-colors duration-300">
                         Discutamos tu Proyecto
                     </a>
                 </div>
             </div>
         </section>
 
-        <section id="habilidades" class="py-16 md:py-24 bg-white">
+        <section id="habilidades" class="py-16 md:py-24 bg-light-secondary-bg dark:bg-dark-secondary-bg fade-in-section-js transition-colors duration-300">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Mi Stack Tecnológico</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-4">Backend</h3>
-                        <ul class="space-y-2 text-gray-600">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-light-text dark:text-dark-text">Mi Stack Tecnológico</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                    <div class="bg-light-bg dark:bg-dark-bg p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 text-accent dark:text-dark-accent">Backend</h3>
+                        <ul class="space-y-2 text-light-secondary-text dark:text-dark-secondary-text">
                             <li>PHP (Laravel 10.x - Experto)</li>
                             <li>CodeIgniter</li>
                             <li>Node.js (Básico)</li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-4">Frontend</h3>
-                        <ul class="space-y-2 text-gray-600">
+                    <div class="bg-light-bg dark:bg-dark-bg p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 text-accent dark:text-dark-accent">Frontend</h3>
+                        <ul class="space-y-2 text-light-secondary-text dark:text-dark-secondary-text">
                             <li>JavaScript</li>
                             <li>React.js</li>
                             <li>HTML5 / CSS3</li>
                             <li>Bootstrap / Tailwind CSS</li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-4">Bases de Datos</h3>
-                        <ul class="space-y-2 text-gray-600">
+                     <div class="bg-light-bg dark:bg-dark-bg p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 text-accent dark:text-dark-accent">Bases de Datos</h3>
+                        <ul class="space-y-2 text-light-secondary-text dark:text-dark-secondary-text">
                             <li>MySQL</li>
                             <li>SQL Server</li>
                             <li>PostgreSQL (Básico)</li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-4">Herramientas y Workflow</h3>
-                        <ul class="space-y-2 text-gray-600">
+                     <div class="bg-light-bg dark:bg-dark-bg p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 text-accent dark:text-dark-accent">Herramientas y Workflow</h3>
+                        <ul class="space-y-2 text-light-secondary-text dark:text-dark-secondary-text">
                             <li>Git / GitHub</li>
                             <li>Docker (Básico)</li>
                             <li>Linux / Apache / Nginx</li>
@@ -177,223 +301,274 @@
             </div>
         </section>
 
-        <section id="proyectos" class="py-16 md:py-24 bg-gray-100">
+        <section id="proyectos" class="py-16 md:py-24 bg-light-bg dark:bg-dark-bg fade-in-section-js transition-colors duration-300">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800">Proyectos Destacados</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-light-text dark:text-dark-text">Proyectos Destacados</h2>
+                <p class="text-center text-light-secondary-text dark:text-dark-secondary-text mb-12 max-w-2xl mx-auto">
                     Dado que muchos de mis proyectos son privados, aquí presento algunos estudios de caso representativos que ilustran mi experiencia y los resultados logrados para mis clientes.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-                        <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Panel+Admin+Genérico" alt="[Imagen de Panel Administrativo Genérico]" class="w-full h-48 object-cover">
+                    <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg rounded-lg shadow-lg overflow-hidden hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                        <img src="https://placehold.co/600x400/e5e7eb/4b5563?text=Panel+Admin+Genérico" alt="Panel Administrativo Genérico" class="w-full h-48 object-cover">
                         <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-3">Sistema de Gestión de Facturación (Retail)</h3>
-                            <p class="text-sm text-gray-500 mb-3">Cliente: Empresa del Sector Retail</p>
-                            <p class="text-gray-600 mb-4">
-                                <strong class="text-gray-800">Desafío:</strong> Procesos manuales de facturación generaban errores y retrasos.
+                            <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Sistema de Gestión de Facturación (Retail)</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Cliente: Empresa del Sector Retail</p>
+                            <p class="text-light-secondary-text dark:text-dark-secondary-text mb-4">
+                                <strong class="text-light-text dark:text-dark-text">Desafío:</strong> Procesos manuales de facturación generaban errores y retrasos.
                             </p>
-                            <p class="text-gray-600 mb-4">
-                                <strong class="text-gray-800">Solución:</strong> Desarrollo de un panel administrativo en Laravel con módulos de clientes, productos, facturación automática PDF y reportes.
+                            <p class="text-light-secondary-text dark:text-dark-secondary-text mb-4">
+                                <strong class="text-light-text dark:text-dark-text">Solución:</strong> Desarrollo de un panel administrativo en Laravel con módulos de clientes, productos, facturación automática PDF y reportes.
                             </p>
-                             <p class="text-gray-600 mb-4">
-                                <strong class="text-gray-800">Resultados:</strong> Reducción del 70% en tiempo de facturación, eliminación de errores manuales y visibilidad financiera en tiempo real.
+                             <p class="text-light-secondary-text dark:text-dark-secondary-text mb-4">
+                                <strong class="text-light-text dark:text-dark-text">Resultados:</strong> Reducción del 70% en tiempo de facturación, eliminación de errores manuales y visibilidad financiera en tiempo real.
                             </p>
-                            <div class="text-sm text-gray-500">
-                                <strong class="text-gray-700">Tecnologías:</strong> Laravel 10, Livewire, MySQL, Bootstrap 5.
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                <strong class="text-gray-600 dark:text-gray-300">Tecnologías:</strong> Laravel 10, Livewire, MySQL, Bootstrap 5.
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-                         <img src="https://placehold.co/600x400/dbeafe/1e40af?text=Migración+E-learning" alt="[Imagen de Migración de Plataforma E-learning]" class="w-full h-48 object-cover">
+                     <div class="bg-light-secondary-bg dark:bg-dark-secondary-bg rounded-lg shadow-lg overflow-hidden hover:shadow-xl dark:hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                         <img src="https://placehold.co/600x400/ccfbf1/0f766e?text=Migración+E-learning" alt="Migración Plataforma E-learning" class="w-full h-48 object-cover">
                         <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-3">Migración de Plataforma E-learning</h3>
-                            <p class="text-sm text-gray-500 mb-3">Cliente: Startup Tecnológica Educativa</p>
-                             <p class="text-gray-600 mb-4">
-                                <strong class="text-gray-800">Desafío:</strong> Plataforma legacy inestable, costosa de mantener y con limitaciones funcionales.
+                            <h3 class="text-xl font-semibold mb-3 text-light-text dark:text-dark-text">Migración de Plataforma E-learning</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Cliente: Startup Tecnológica Educativa</p>
+                             <p class="text-light-secondary-text dark:text-dark-secondary-text mb-4">
+                                <strong class="text-light-text dark:text-dark-text">Desafío:</strong> Plataforma legacy inestable, costosa de mantener y con limitaciones funcionales.
                             </p>
-                            <p class="text-gray-600 mb-4">
-                                <strong class="text-gray-800">Solución:</strong> Migración completa de la base de datos y lógica de negocio a una nueva arquitectura basada en Laravel, con frontend en React.js.
+                            <p class="text-light-secondary-text dark:text-dark-secondary-text mb-4">
+                                <strong class="text-light-text dark:text-dark-text">Solución:</strong> Migración completa de la base de datos y lógica de negocio a una nueva arquitectura basada en Laravel, con frontend en React.js.
                             </p>
-                             <p class="text-gray-600 mb-4">
-                                <strong class="text-gray-800">Resultados:</strong> Plataforma estable, rendimiento mejorado, reducción de costos de mantenimiento y facilidad para añadir nuevas funcionalidades.
+                             <p class="text-light-secondary-text dark:text-dark-secondary-text mb-4">
+                                <strong class="text-light-text dark:text-dark-text">Resultados:</strong> Plataforma estable, rendimiento mejorado, reducción de costos de mantenimiento y facilidad para añadir nuevas funcionalidades.
                             </p>
-                            <div class="text-sm text-gray-500">
-                                <strong class="text-gray-700">Tecnologías:</strong> Laravel 9, React.js, MySQL, REST API.
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                <strong class="text-gray-600 dark:text-gray-300">Tecnologías:</strong> Laravel 9, React.js, MySQL, REST API.
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
                  <div class="text-center mt-12">
-                     <h3 class="text-2xl font-semibold mb-4">Proyectos Personales en GitHub</h3>
-                     <p class="text-gray-600 mb-6">Explora algunos de mis proyectos personales para ver mi código en acción.</p>
-                     <a href="https://github.com/jeancaescalante" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-black transition duration-300">
+                     <h3 class="text-2xl font-semibold mb-4 text-light-text dark:text-dark-text">Proyectos Personales en GitHub</h3>
+                     <p class="text-light-secondary-text dark:text-dark-secondary-text mb-6">Explora algunos de mis proyectos personales para ver mi código en acción.</p>
+                     <a href="https://github.com/jeancaescalante" target="_blank" rel="noopener noreferrer" class="bg-gray-700 dark:bg-gray-600 text-white dark:text-light-text font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-gray-800 dark:hover:bg-gray-500 hover:text-accent dark:hover:text-dark-accent transition-colors duration-300 inline-flex items-center">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" fill="currentColor" viewBox="0 0 16 16"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/> </svg>
                         Visitar mi GitHub
                     </a>
                 </div>
             </div>
         </section>
 
-        <section id="testimonios" class="py-16 md:py-24 bg-blue-50">
+        <section id="contacto" class="py-16 md:py-24 bg-light-secondary-bg dark:bg-dark-secondary-bg fade-in-section-js transition-colors duration-300">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Lo que Dicen Mis Clientes</h2>
-                <div class="max-w-3xl mx-auto text-center bg-white p-8 rounded-lg shadow-lg">
-                    <blockquote class="text-xl italic text-gray-700 mb-6">
-                        "Jean Carlos demostró un gran profesionalismo y conocimiento técnico durante la migración de nuestro sistema. La comunicación fue excelente y el resultado superó nuestras expectativas. ¡Altamente recomendado!"
-                    </blockquote>
-                    <p class="font-semibold text-gray-800">Nombre Apellido</p>
-                    <p class="text-sm text-gray-500">Cargo, Empresa Cliente (o Cliente en Workana)</p>
-                    <div class="mt-6">
-                         <a href="[TU_ENLACE_WORKANA]" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 transition duration-300">Ver más reseñas en Workana</a>
-                     </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contacto" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Trabajemos Juntos</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-light-text dark:text-dark-text">Trabajemos Juntos</h2>
                 <div class="max-w-2xl mx-auto">
-                    <p class="text-center text-lg text-gray-600 mb-8">
-                        ¿Tienes un proyecto en mente o necesitas modernizar tu sistema actual? ¡Me encantaría saber más! Contáctame y hablemos sobre cómo puedo ayudarte a alcanzar tus objetivos.
+                    <p class="text-center text-lg text-light-secondary-text dark:text-dark-secondary-text mb-10">
+                        ¿Listo para empezar tu próximo proyecto o necesitas ayuda con uno existente? Contáctame a través de la plataforma que prefieras o envíame un correo directamente.
                     </p>
-                    <form action="[TU_ENDPOINT_FORMSPREE]" method="POST" class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                            <input type="text" name="name" id="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" name="email" id="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
-                        </div>
-                        <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Asunto</label>
-                            <input type="text" name="subject" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
-                            <textarea name="message" id="message" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300">
-                                Enviar Mensaje
-                            </button>
-                        </div>
-                    </form>
-                    <div class="text-center mt-10 text-gray-600">
-                        <p class="mb-2">O contáctame directamente:</p>
-                        <p><strong>Email:</strong> <a href="mailto:[TU_EMAIL]" class="text-blue-600 hover:underline">[TU_EMAIL]</a></p>
-                        <p><strong>Ubicación:</strong> Mérida, Venezuela</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <a href="[TU_ENLACE_WORKANA]" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-dark-bg transition duration-300 w-full sm:w-auto">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                             </svg>
+                            Workana
+                        </a>
+                        <a href="[TU_ENLACE_FIVERR]" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-offset-dark-bg transition duration-300 w-full sm:w-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon mr-2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 3.75 3.75 0 0 0-7.965.495A3.75 3.75 0 0 0 12 18Z" />
+                            </svg>
+                            Fiverr
+                        </a>
+                        <a href="mailto:[TU_EMAIL]?subject=Contacto%20desde%20Portafolio%20Web" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-lg shadow-sm text-light-text dark:text-dark-text bg-light-secondary-bg dark:bg-dark-secondary-bg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent dark:focus:ring-offset-dark-bg transition duration-300 w-full sm:w-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon mr-2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                            </svg>
+                            Enviar Email
+                        </a>
                     </div>
+                     <div class="text-center mt-10 text-light-secondary-text dark:text-dark-secondary-text">
+                         <p><strong>Ubicación:</strong> Mérida, Venezuela</p>
+                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-gray-400 py-8">
+    <footer class="bg-light-bg dark:bg-dark-bg text-light-secondary-text dark:text-dark-secondary-text py-8 transition-colors duration-300">
         <div class="container mx-auto px-6 text-center">
             <div class="flex justify-center space-x-6 mb-4">
-                 <a href="[TU_ENLACE_LINKEDIN]" target="_blank" rel="noopener noreferrer" class="hover:text-white transition duration-300">[Icono LinkedIn]</a>
-                 <a href="https://github.com/jeancaescalante" target="_blank" rel="noopener noreferrer" class="hover:text-white transition duration-300">[Icono GitHub]</a>
-                 <a href="[TU_ENLACE_WORKANA]" target="_blank" rel="noopener noreferrer" class="hover:text-white transition duration-300">[Icono Workana]</a>
+                 <a href="https://github.com/jeancaescalante" target="_blank" rel="noopener noreferrer" class="hover:text-accent dark:hover:text-dark-accent transition duration-300">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 16 16"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/> </svg>
+                 </a>
             </div>
             <p>&copy; <span id="current-year"></span> Jean Carlos Escalante. Todos los derechos reservados.</p>
+            <p class="text-xs mt-2">Hecho con <span class="text-red-500">&hearts;</span> y Tailwind CSS</p>
         </div>
     </footer>
 
     <script>
-        // Menú Móvil
+        // --- Element References ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = themeToggleBtn.querySelector('.light-icon');
+        const moonIcon = themeToggleBtn.querySelector('.dark-icon');
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Cerrar menú móvil al hacer clic en un enlace
         const mobileLinks = mobileMenu.querySelectorAll('a');
+        const navLinks = document.querySelectorAll('header nav a[href^="#"]');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]');
+        const sections = document.querySelectorAll('main section[id]');
+
+        // --- Function Definitions ---
+
+        // Function to Highlight Active Navigation Link
+        const activateNavLink = () => {
+            let currentSectionId = '';
+            let minDistance = Infinity;
+            const headerOffset = 80; // Adjust based on your header height
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const scrollPosition = window.pageYOffset + headerOffset;
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + section.offsetHeight) {
+                     currentSectionId = section.getAttribute('id');
+                     minDistance = 0; // Exact match
+                 } else if (minDistance !== 0) {
+                     const distance = Math.abs(scrollPosition - sectionTop);
+                     if (distance < minDistance) {
+                         minDistance = distance;
+                         currentSectionId = section.getAttribute('id');
+                     }
+                 }
+            });
+
+             // Fallback for top/bottom of page
+             if (minDistance > 0 && sections.length > 0) {
+                 if (window.pageYOffset < sections[0].offsetTop - headerOffset) {
+                      currentSectionId = sections[0].getAttribute('id');
+                 } else if (window.pageYOffset + window.innerHeight >= document.body.offsetHeight - 50) {
+                     currentSectionId = sections[sections.length - 1].getAttribute('id');
+                 }
+             }
+
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            const activeColorClass = isDarkMode ? 'text-dark-accent' : 'text-accent';
+            const inactiveColorClass = isDarkMode ? 'text-dark-secondary-text' : 'text-light-secondary-text';
+            const activeMobileBgClass = isDarkMode ? 'bg-gray-700' : 'bg-gray-100'; // Use Tailwind classes directly
+
+            // Update desktop links
+            navLinks.forEach(link => {
+                link.classList.remove('nav-active', 'text-accent', 'text-dark-accent'); // Remove specific color classes too
+                link.classList.add(inactiveColorClass); // Add inactive color class
+
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('nav-active');
+                    link.classList.remove(inactiveColorClass);
+                    link.classList.add(activeColorClass); // Add active color class
+                }
+            });
+
+            // Update mobile links
+             mobileNavLinks.forEach(link => {
+                link.classList.remove('nav-active', 'text-accent', 'text-dark-accent', 'bg-gray-100', 'bg-gray-700');
+                link.classList.add(inactiveColorClass);
+
+                 if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('nav-active');
+                    link.classList.add(activeMobileBgClass);
+                    link.classList.remove(inactiveColorClass);
+                    link.classList.add(activeColorClass);
+                }
+            });
+        };
+
+        // Function to Apply Theme
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                if (moonIcon) moonIcon.style.display = 'inline-block'; // Check if element exists
+                if (sunIcon) sunIcon.style.display = 'none'; // Check if element exists
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                if (moonIcon) moonIcon.style.display = 'none'; // Check if element exists
+                if (sunIcon) sunIcon.style.display = 'inline-block'; // Check if element exists
+            }
+            // Update nav link colors immediately after theme change
+            activateNavLink(); // Now defined before being called here
+        };
+
+
+        // --- Initial Setup & Event Listeners ---
+
+        // Theme Initializer
+        const userTheme = localStorage.getItem('theme');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (userTheme === 'dark' || (!userTheme && systemTheme)) {
+            applyTheme('dark');
+        } else {
+            applyTheme('light');
+        }
+
+        // Theme Toggle Listener
+        if (themeToggleBtn) { // Check if button exists before adding listener
+             themeToggleBtn.addEventListener('click', () => {
+                const isDarkMode = document.documentElement.classList.contains('dark');
+                applyTheme(isDarkMode ? 'light' : 'dark');
+            });
+        }
+
+
+        // Mobile Menu Toggle Listener
+         if (menuBtn && mobileMenu) { // Check if elements exist
+             menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+         }
+
+
+        // Mobile Menu Link Click Listener
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+                 if (mobileMenu) mobileMenu.classList.add('hidden'); // Check if menu exists
             });
         });
 
-        // Actualizar año en footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+        // Footer Year Update
+        const currentYearSpan = document.getElementById('current-year');
+        if (currentYearSpan) { // Check if element exists
+            currentYearSpan.textContent = new Date().getFullYear();
+        }
 
-        // Animación Fade-in en Scroll (Opcional, más avanzado)
+
+        // Scroll Animations Observer
         const observerOptions = {
-            root: null, // relative to document viewport
+            root: null,
             rootMargin: '0px',
-            threshold: 0.1 // trigger when 10% of the element is visible
+            threshold: 0.1
         };
-
         const observerCallback = (entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Add fade-in class when element enters viewport
-                    entry.target.classList.add('fade-in-section');
-                    // Optional: stop observing once animated
-                    // observer.unobserve(entry.target);
+                    entry.target.classList.add('visible');
                 }
                 // Optional: remove class if element scrolls out of view (for re-animation)
                 // else {
-                //     entry.target.classList.remove('fade-in-section');
+                //     entry.target.classList.remove('visible');
                 // }
             });
         };
-
         const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-        // Observe all sections you want to fade in
-        document.querySelectorAll('section').forEach(section => {
-             // Apply initial styling slightly differently for JS animation
-             section.style.opacity = '0';
-             section.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-             section.style.transform = 'translateY(20px)';
+        document.querySelectorAll('.fade-in-section-js').forEach(section => {
              observer.observe(section);
         });
 
-        // Reset styles for the hero section which uses CSS animation
-        const heroSection = document.getElementById('inicio');
-        if(heroSection) {
-            heroSection.style.opacity = '';
-            heroSection.style.transition = '';
-            heroSection.style.transform = '';
-        }
-
-        // Active Navigation Link Highlighting (Opcional)
-        const navLinks = document.querySelectorAll('header nav a[href^="#"]');
-        const sections = document.querySelectorAll('main section[id]');
-
-        const activateNavLink = () => {
-            let currentSectionId = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100; // Adjust offset as needed
-                const sectionHeight = section.offsetHeight;
-                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-                    currentSectionId = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('nav-active');
-                if (link.getAttribute('href') === `#${currentSectionId}`) {
-                    link.classList.add('nav-active');
-                }
-            });
-             // Handle mobile menu links as well
-            const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]');
-             mobileNavLinks.forEach(link => {
-                link.classList.remove('nav-active');
-                if (link.getAttribute('href') === `#${currentSectionId}`) {
-                    link.classList.add('nav-active');
-                }
-            });
-        };
-
+        // Scroll Listener for Nav Highlighting
         window.addEventListener('scroll', activateNavLink);
-        // Initial check in case the page loads scrolled down
-        activateNavLink();
 
+        // Initial Nav Highlighting Check on Load
+        document.addEventListener('DOMContentLoaded', activateNavLink);
 
     </script>
 
